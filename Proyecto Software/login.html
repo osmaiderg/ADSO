@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Almacenes Paraiso</title>
+    <!--Icono almacen-->
+    <link rel="icon" type="image/x-icon" href="multimedia/logo.jpg" />
+    <!--Archivo con los estilos-->
+    <link rel="stylesheet" href="estilo.css">
+    <!--Archivo javascrit-->
+    
+    <!--Google iconos-->
+<script src="https://kit.fontawesome.com/b8c22aa914.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Navegacion-->
+    <nav class="navegacion">
+        <img src="multimedia/logo20.png" alt="">
+        <div class="container">
+            <div class="header">
+                <ul class="menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="about.html">Nosotros</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                </ul>
+                <div class="iconos">
+                    <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
+                    <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Linea divisoria-->
+    <hr>
+
+    <div class="login-container">
+        <div class="formulario-login">
+            <h2>Iniciar sesión</h2>
+            <form id="login-form">
+                <select class="role-select" id="role" required>
+                    <option value="" disabled selected>Seleccionar rol</option>
+                    <option value="admin">Administrador</option>
+                    <option value="client">Cliente</option>
+                    <option value="provider">Proveedor</option>
+                </select>
+                <input type="text" id="username" placeholder="Usuario" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <button id="btn-login" type="submit">Iniciar sesión</button>
+                <p class="error-message" id="error-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="java.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almacenes Paraiso</title>
+<!--Icono almacen-->
+<link rel="icon" type="image/x-icon" href="multimedia/logo.jpg" />
+<!--Archivo con los estilos-->
+<link rel="stylesheet" href="estilo.css">
+<!--Archivo javascrit-->
+<script src="java.js"></script>
+<!--Google iconos-->
+<script src="https://kit.fontawesome.com/b8c22aa914.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Navegacion-->
+    <nav class="navegacion">
+        <img src="multimedia/logo20.png" alt="">
+        <div class="container">
+            <div class="header">
+                <ul class="menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="about.html">Nosotros</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                </ul>
+                <div class="iconos">
+                    <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
+                    <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Linea divisoria-->
+    <hr>
+
+    <div class="domicilios">
+        <img class="imagen" src="multimedia/trabajamos.jpg" alt="">
+    </div>
+    <div class="texto">
+        <h1>Somos la tienda a su alcance</h1>
+        <p>Tenemos los mejores productos a su servicio con una exelente <br> calidad y amigables con su bolsillo</p>
+    </div>
+
+    <div class="image-slider">
+        <!-- Contenedor para las imágenes -->
+        <div class="slider-images">
+            <img src="multimedia/Productos/frutas.jpg" alt="Imagen 1">
+            <img src="multimedia/Productos/Aseo.jpg" alt="Imagen 2">
+            <img src="multimedia/Productos/panaderia.jpg" alt="Imagen 3">
+            <img src="multimedia/Productos/lacteos.jpg" alt="Imagen 4">
+        </div>
+
+        <!-- Controles de navegación -->
+        <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+
+    <section class="producto-container">
+        <div class="producto">
+            <img src="multimedia/premioMercado.jpg" alt="Producto 1" class="producto-imagen">
+            <h2>Producto 1</h2>
+            <p class="description">Este es el producto 1, con características increíbles para mejorar tu experiencia.</p>
+            <p class="price">$50.00</p>
+            
+        </div>
+        <div class="producto">
+            <img src="multimedia/chocolates.jpg" alt="Producto 2" class="producto-imagen">
+            <h2>Producto 2</h2>
+            <p class="description">Producto 2, ideal para quienes buscan calidad y rendimiento a un precio accesible.</p>
+            <p class="price">$75.00</p>
+            
+        </div>
+        <div class="producto">
+            <img src="multimedia/verduras.jpg" alt="Producto 3" class="producto-imagen">
+            <h2>Producto 3</h2>
+            <p class="description">Con el Producto 3 obtendrás una experiencia única, pensada para tu comodidad.</p>
+            <p class="price">$100.00</p>
+            
+        </div>
+    </section>
+
+    <!-- Formulario de suscripción -->
+    <div class="form-container">
+        <h2>Suscríbete a nuestro boletín</h2>
+        <div class="boton">
+            <form>
+                <input type="email" name="email" placeholder="Ingresa tu correo" required>
+                <button class="boton-suscribirse" type="submit">Suscribirme</button>
+            </form>
+        </div>
+        
+        <div class="mensaje">
+            <p>Recibe las últimas noticias y actualizaciones.</p>
+        </div>
+    </div>
+    <br>
+
+   <!-- Footer -->
+   <footer>
+    <p>&copy; 2024 Mi Sitio Web. Todos los derechos reservados.</p>
+    <p>
+        <a href="#privacy">Política de privacidad</a> |
+        <a href="#terms">Términos y condiciones</a>
+    </p>
+</footer>
+
+</body>
+
+</html>

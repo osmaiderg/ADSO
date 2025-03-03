@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almacenes Paraiso</title>
+<!--Icono almacen-->
+<link rel="icon" type="image/x-icon" href="multimedia/logo.jpg" />
+<!--Archivo con los estilos-->
+<link rel="stylesheet" href="estilo.css">
+<!--Archivo javascrit-->
+<script src="java.js"></script>
+<!--Google iconos-->
+<script src="https://kit.fontawesome.com/b8c22aa914.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Navegacion-->
+    <nav class="navegacion">
+        <img src="multimedia/logo20.png" alt="">
+        <div class="container">
+            <div class="header">
+                <ul class="menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="about.html">Nosotros</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+    <!-- Linea divisoria-->
+  
+
+    <header class="gestion">
+        <h1>Sistema de Gestión Almacenes Paraiso</h1>
+    </header>
+
+    <nav class="items">
+        <a href="#" onclick="showSection('products')">Productos</a>
+        <a href="#" onclick="showSection('inventory')">Inventario</a>
+        <a href="#" onclick="showSection('clients')">Clientes</a>
+        <a href="#" onclick="showSection('suppliers')">Proveedores</a>
+    </nav>
+
+    <div class="containerGestor">
+
+        <!-- Productos -->
+        <div class="section" id="products">
+            <h2>Gestión de Productos</h2>
+            <div class="form-container">
+                <input type="text" id="productName" placeholder="Nombre del Producto">
+                <input type="number" id="productPrice" placeholder="Precio">
+                <input type="number" id="productStock" placeholder="Cantidad en Stock">
+                <button class="button" onclick="addProduct()">Añadir Producto</button>
+            </div>
+            <table id="productTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                        
+                    </tr>
+                </thead>
+                <tbody id="productList">
+                    <!-- Productos se añadirán aquí -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Inventario -->
+        <div class="section" id="inventory" style="display: none;">
+            <h2>Inventario</h2>
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cantidad Disponible</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryList">
+                    <!-- Inventario se cargará aquí -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Clientes -->
+        <div class="section" id="clients" style="display: none;">
+            <h2>Gestión de Clientes</h2>
+            <div class="form-container">
+                <input type="text" id="clientName" placeholder="Nombre del Cliente">
+                <input type="text" id="clientEmail" placeholder="Correo Electrónico">
+                <button class="button" onclick="addClient()">Añadir Cliente</button>
+            </div>
+            <table id="clientTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="clientList">
+                    <!-- Clientes se cargarán aquí -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Proveedores -->
+        <div class="section" id="suppliers" style="display: none;">
+            <h2>Gestión de Proveedores</h2>
+            <div class="form-container">
+                <input type="text" id="supplierName" placeholder="Nombre del Proveedor">
+                <input type="text" id="supplierPhone" placeholder="Teléfono">
+                <button class="button" onclick="addSupplier()">Añadir Proveedor</button>
+            </div>
+            <table id="supplierTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="supplierList">
+                    <!-- Proveedores se cargarán aquí -->
+                </tbody>
+            </table>
+
+    <script src="administrador.js"></script>
+    
+</body>
+</html>

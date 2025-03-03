@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Supermercado</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #ff9800;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        input, select {
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+        }
+        .button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #ff9800;
+            color: white;
+        }
+        .actions button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado -->
+    <header>
+        <h1>Sistema de Gestión de Supermercado</h1>
+    </header>
+
+    <!-- Barra de navegación -->
+    <nav id="navbar">
+        <a href="#" onclick="showSection('login')">Login</a>
+        <a href="#" onclick="showSection('products')">Productos</a>
+        <a href="#" onclick="showSection('inventory')">Inventarios</a>
+        <a href="#" onclick="showSection('clients')">Clientes</a>
+        <a href="#" onclick="showSection('billing')">Facturación</a>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="container" id="content">
+
+        <!-- Login -->
+        <div class="section" id="login" style="display: none;">
+            <h2>Login</h2>
+            <div class="form-container">
+                <input type="text" id="username" placeholder="Usuario" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <button class="button" onclick="login()">Iniciar sesión</button>
+            </div>
+        </div>
+
+        <!-- Productos -->
+        <div class="section" id="products" style="display: none;">
+            <h2>Productos Ofertados</h2>
+            <table id="productTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Categoría</th>
+                        <th>Stock</th>
+                    </tr>
+                </thead>
+                <tbody id="productList">
+                    <!-- Productos dinámicos -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Inventario -->
+        <div class="section" id="inventory" style="display: none;">
+            <h2>Gestión de Inventarios</h2>
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad Disponible</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryList">
+                    <!-- Inventario dinámico -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Clientes -->
+        <div class="section" id="clients" style="display: none;">
+            <h2>Gestión de Clientes</h2>
+            <div class="form-container">
+                <input type="text" id="clientName" placeholder="Nombre del Cliente" required>
+                <input type="email" id="clientEmail" placeholder="Correo del Cliente" required>
+                <button class="button" onclick="addClient()">Añadir Cliente</button>
+            </div>
+            <table id="clientTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="clientList">
+                    <!-- Lista de clientes -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Facturación -->
+        <div class="section" id="billing" style="display: none;">
+            <h2>Facturación</h2>
+            <div class="form-container">
+                <select id="billingProductSelect">
+                    <option value="">Selecciona un producto</option>
+                    <!-- Productos ofertados para facturación -->
+                </select>
+                <input type="number" id="billingQuantity" placeholder="Cantidad" required>
+                <button class="button" onclick="generateInvoice()">Generar Factura</button>
+            </div>
+            <h3>Facturas Generadas</h3>
+            <table id="invoiceTable">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceList">
+                    <!-- Facturas generadas -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        // Datos simulados (normalmente vendrían de una base de datos)
+        const users = [
+            { username: 'admin', password: 'admin123' }
+        ];
+
+        const products = [
+            { name: 'Manzanas', price: 1.5, category: 'Frutas', stock: 100 },
+            { name: 'Leche', price: 0.99, category: 'Lácteos', stock: 50 },
+            { name: 'Pollo', price: 5.99, category: 'Carnes', stock: 30 }
+        ];
+
+        const clients = [];
+        const invoices = [];
+
+        let loggedIn = false;
+
+        // Función para mostrar una sección
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+            document.getElementById(section).style.display = 'block';
+        }
+
+        // Función de login
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                loggedIn = true;
+                showSection('products');
+                displayProducts();
+                document.getElementById('navbar').style.display = 'block';
+            } else {
+                alert('Usuario o contraseña incorrectos.');
+            }
+        }
+
+        // Función para mostrar productos ofertados
+        function displayProducts() {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>$${product.price}</td>
+                    <td>${product.category}</td>
+                    <td>${product.stock}</td>
+                `;
+                productList.appendChild(row);
+            });
+        }
+
+        // Función para mostrar inventario
+        function displayInventory() {
+            const inventoryList = document.getElementById('inventoryList');
+            inventoryList.innerHTML = '';
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.stock}</td>
+                    <td><button class="button" onclick="updateInventory('${product.name}')">Actualizar</button></td>
+                `;
+                inventoryList.appendChild(row);
+            });
+        }
+
+        // Función para actualizar inventario
+        function updateInventory(productName) {
+            const product = products.find(p => p.name === productName);
+            const newStock = prompt('Nueva cantidad en stock', product.stock);
+            if (newStock !== null) {
+                product.stock = parseInt(newStock);
+                displayInventory();
+            }
+        }
+
+        // Función para añadir cliente
+        function addClient() {
+            const name = document.getElementById('clientName').value;
+            const email = document.getElementById('clientEmail').value;
+            if (name && email) {
+                clients.push({ name, email });
+                displayClients();
+            } else {
+                alert('Por favor, complete todos los campos.');
+            }
+        }
+
+        // Función para mostrar lista de clientes
+        function displayClients() {
+            const clientList = document.getElementById('clientList');
+            clientList.innerHTML = '';
+            clients.forEach(client => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${client.name}</td>
+                    <td>${client.email}</td>
+                    <td><button class="button" onclick="deleteClient('${client.name}')">Eliminar</button></td>
+                `;
+                clientList.appendChild(row);
+            });
+        }
+
+        // Función para eliminar cliente
+        function deleteClient(name) {
+            const index = clients.findIndex(client => client.name === name);
+            if (index !== -1) {
+                clients.splice(index, 1);
+                displayClients();
+            }
+        }
+
+        // Función para generar factura
+        function generateInvoice() {
+            const productSelect = document.getElementById('billingProductSelect');
+            const quantity = parseInt(document.getElementById('billingQuantity').value);
+            const productName = productSelect.value;
+
+            if (productName && quantity) {
+                const product = products.find(p => p.name === productName);
+                const total = product.price * quantity;
+                const clientName = prompt('Nombre del cliente');
+                invoices.push({ client: clientName, product: productName, quantity, total });
+                displayInvoices();
+            } else {
+                alert('Seleccione un producto y una cantidad');
+            }
+        }
+
+        // Función para mostrar facturas generadas
+        function displayInvoices() {
+            const invoiceList = document.getElementById('invoiceList');
+            invoiceList.innerHTML = '';
+            invoices.forEach(invoice => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${invoice.client}</td>
+                    <td>${invoice.product}</td>
+                    <td>${invoice.quantity}</td>
+                    <td>$${invoice.total}</td>
+                `;
+                invoiceList.appendChild(row);
+            });
+        }
+
+        // Inicialización: Mostrar la página de login
+        showSection('login');
+        document.getElementById('navbar').style.display = 'none';
+    </script>
+</body>
+</html>

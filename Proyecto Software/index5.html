@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Supermercado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .gestion {
+            background-color: #ff9800;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .items {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        .form-container, .section {
+            margin-bottom: 20px;
+        }
+        input, select {
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+        }
+        .button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #ff9800;
+            color: white;
+        }
+        .actions button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="gestion">
+        <h1>Sistema de Gestión Almacenes Paraiso</h1>
+    </header>
+
+    <nav class="items">
+        <a href="#" onclick="showSection('products')">Productos</a>
+        <a href="#" onclick="showSection('inventory')">Inventario</a>
+        <a href="#" onclick="showSection('clients')">Clientes</a>
+        <a href="#" onclick="showSection('suppliers')">Proveedores</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Productos -->
+        <div class="section" id="products">
+            <h2>Gestión de Productos</h2>
+            <div class="form-container">
+                <input type="text" id="productName" placeholder="Nombre del Producto">
+                <input type="number" id="productPrice" placeholder="Precio">
+                <input type="number" id="productStock" placeholder="Cantidad en Stock">
+                <button class="button" onclick="addProduct()">Añadir Producto</button>
+            </div>
+            <table id="productTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                        
+                    </tr>
+                </thead>
+                <tbody id="productList">
+                    <!-- Productos se añadirán aquí -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Inventario -->
+        <div class="section" id="inventory" style="display: none;">
+            <h2>Inventario</h2>
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cantidad Disponible</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryList">
+                    <!-- Inventario se cargará aquí -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Clientes -->
+        <div class="section" id="clients" style="display: none;">
+            <h2>Gestión de Clientes</h2>
+            <div class="form-container">
+                <input type="text" id="clientName" placeholder="Nombre del Cliente">
+                <input type="text" id="clientEmail" placeholder="Correo Electrónico">
+                <button class="button" onclick="addClient()">Añadir Cliente</button>
+            </div>
+            <table id="clientTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="clientList">
+                    <!-- Clientes se cargarán aquí -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Proveedores -->
+        <div class="section" id="suppliers" style="display: none;">
+            <h2>Gestión de Proveedores</h2>
+            <div class="form-container">
+                <input type="text" id="supplierName" placeholder="Nombre del Proveedor">
+                <input type="text" id="supplierPhone" placeholder="Teléfono">
+                <button class="button" onclick="addSupplier()">Añadir Proveedor</button>
+            </div>
+            <table id="supplierTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="supplierList">
+                    <!-- Proveedores se cargarán aquí -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Obtener datos del almacenamiento local
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+        let clients = JSON.parse(localStorage.getItem('clients')) || [];
+        let suppliers = JSON.parse(localStorage.getItem('suppliers')) || [];
+
+        // Mostrar sección correspondiente
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+            document.getElementById(section).style.display = 'block';
+        }
+
+        // Mostrar productos en la tabla
+        function displayProducts() {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
+            products.forEach((product, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>$${product.price}</td>
+                    <td>${product.stock}</td>
+                    <td class="actions">
+                        <button class="button" onclick="editProduct(${index})">Editar</button>
+                        <button class="button" onclick="deleteProduct(${index})">Eliminar</button>
+                    </td>
+                `;
+                productList.appendChild(row);
+            });
+        }
+
+        // Añadir un producto
+        function addProduct() {
+            const name = document.getElementById('productName').value;
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const stock = parseInt(document.getElementById('productStock').value);
+            if (name && price && stock >= 0) {
+                const newProduct = { name, price, stock };
+                products.push(newProduct);
+                localStorage.setItem('products', JSON.stringify(products));
+                displayProducts();
+                document.getElementById('productName').value = '';
+                document.getElementById('productPrice').value = '';
+                document.getElementById('productStock').value = '';
+            } else {
+                alert('Por favor, rellene todos los campos correctamente.');
+            }
+        }
+
+        // Editar un producto
+        function editProduct(index) {
+            const product = products[index];
+            const newName = prompt('Nuevo nombre', product.name);
+            const newPrice = prompt('Nuevo precio', product.price);
+            const newStock = prompt('Nueva cantidad', product.stock);
+            if (newName && newPrice && newStock) {
+                products[index] = { name: newName, price: parseFloat(newPrice), stock: parseInt(newStock) };
+                localStorage.setItem('products', JSON.stringify(products));
+                displayProducts();
+            }
+        }
+
+        // Eliminar un producto
+        function deleteProduct(index) {
+            if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+                products.splice(index, 1);
+                localStorage.setItem('products', JSON.stringify(products));
+                displayProducts();
+            }
+        }
+
+        // Mostrar inventario (basado en los productos)
+        function displayInventory() {
+            const inventoryList = document.getElementById('inventoryList');
+            inventoryList.innerHTML = '';
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${product.name}</td><td>${product.stock}</td>`;
+                inventoryList.appendChild(row);
+            });
+        }
+
+        // Añadir cliente
+        function addClient() {
+            const name = document.getElementById('clientName').value;
+            const email = document.getElementById('clientEmail').value;
+            if (name && email) {
+                clients.push({ name, email });
+                localStorage.setItem('clients', JSON.stringify(clients));
+                displayClients();
+                document.getElementById('clientName').value = '';
+                document.getElementById('clientEmail').value = '';
+            } else {
+                alert('Por favor, rellene todos los campos.');
+            }
+        }
+
+        // Mostrar clientes
+        function displayClients() {
+            const clientList = document.getElementById('clientList');
+            clientList.innerHTML = '';
+            clients.forEach((client, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${client.name}</td>
+                    <td>${client.email}</td>
+                    <td><button class="button" onclick="deleteClient(${index})">Eliminar</button></td>
+                `;
+                clientList.appendChild(row);
+            });
+        }
+
+        // Eliminar cliente
+        function deleteClient(index) {
+            clients.splice(index, 1);
+            localStorage.setItem('clients', JSON.stringify(clients));
+            displayClients();
+        }
+
+        // Añadir proveedor
+        function addSupplier() {
+            const name = document.getElementById('supplierName').value;
+            const phone = document.getElementById('supplierPhone').value;
+            if (name && phone) {
+                suppliers.push({ name, phone });
+                localStorage.setItem('suppliers', JSON.stringify(suppliers));
+                displaySuppliers();
+                document.getElementById('supplierName').value = '';
+                document.getElementById('supplierPhone').value = '';
+            } else {
+                alert('Por favor, rellene todos los campos.');
+            }
+        }
+
+        // Mostrar proveedores
+        function displaySuppliers() {
+            const supplierList = document.getElementById('supplierList');
+            supplierList.innerHTML = '';
+            suppliers.forEach((supplier, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${supplier.name}</td>
+                    <td>${supplier.phone}</td>
+                    <td><button class="button" onclick="deleteSupplier(${index})">Eliminar</button></td>
+                `;
+                supplierList.appendChild(row);
+            });
+        }
+
+        // Eliminar proveedor
+        function deleteSupplier(index) {
+            suppliers.splice(index, 1);
+            localStorage.setItem('suppliers', JSON.stringify(suppliers));
+            displaySuppliers();
+        }
+
+        // Inicializar funciones al cargar la página
+        displayProducts();
+        displayClients();
+        displaySuppliers();
+        displayInventory();
+    </script>
+
+</body>
+</html>
